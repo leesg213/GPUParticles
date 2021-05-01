@@ -1,10 +1,11 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Filename: deferredbuffersclass.cpp
+// Filename: GBuffersClass.cpp
 ////////////////////////////////////////////////////////////////////////////////
-#include "deferredbuffersclass.h"
+#include "pch.h"
+#include "GBuffersClass.h"
 
 
-DeferredBuffersClass::DeferredBuffersClass()
+GBuffersClass::GBuffersClass()
 {
 	int i;
 
@@ -20,17 +21,17 @@ DeferredBuffersClass::DeferredBuffersClass()
 }
 
 
-DeferredBuffersClass::DeferredBuffersClass(const DeferredBuffersClass& other)
+GBuffersClass::GBuffersClass(const GBuffersClass& other)
 {
 }
 
 
-DeferredBuffersClass::~DeferredBuffersClass()
+GBuffersClass::~GBuffersClass()
 {
 }
 
 
-bool DeferredBuffersClass::Initialize(ID3D11Device* device, int textureWidth, int textureHeight, float screenDepth, float screenNear)
+bool GBuffersClass::Initialize(ID3D11Device* device, int textureWidth, int textureHeight, float screenDepth, float screenNear)
 {
 	D3D11_TEXTURE2D_DESC textureDesc;
 	HRESULT result;
@@ -151,7 +152,7 @@ bool DeferredBuffersClass::Initialize(ID3D11Device* device, int textureWidth, in
 }
 
 
-void DeferredBuffersClass::Shutdown()
+void GBuffersClass::Shutdown()
 {
 	int i;
 
@@ -193,7 +194,7 @@ void DeferredBuffersClass::Shutdown()
 }
 
 
-void DeferredBuffersClass::SetRenderTargets(ID3D11DeviceContext* deviceContext)
+void GBuffersClass::SetRenderTargets(ID3D11DeviceContext* deviceContext)
 {
 	// Bind the render target view array and depth stencil buffer to the output render pipeline.
 	deviceContext->OMSetRenderTargets(BUFFER_COUNT, m_renderTargetViewArray, m_depthStencilView);
@@ -205,7 +206,7 @@ void DeferredBuffersClass::SetRenderTargets(ID3D11DeviceContext* deviceContext)
 }
 
 
-void DeferredBuffersClass::ClearRenderTargets(ID3D11DeviceContext* deviceContext, float red, float green, float blue, float alpha)
+void GBuffersClass::ClearRenderTargets(ID3D11DeviceContext* deviceContext, float red, float green, float blue, float alpha)
 {
 	float color[4];
 	int i;
@@ -230,7 +231,7 @@ void DeferredBuffersClass::ClearRenderTargets(ID3D11DeviceContext* deviceContext
 }
 
 
-ID3D11ShaderResourceView* DeferredBuffersClass::GetShaderResourceView(int view)
+ID3D11ShaderResourceView* GBuffersClass::GetShaderResourceView(int view)
 {
 	return m_shaderResourceViewArray[view];
 }

@@ -1,20 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: applicationclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
+#include "pch.h"
 #include "applicationclass.h"
-
+#include "util.h"
 
 ApplicationClass::ApplicationClass()
 {
-	m_Input = 0;
-	m_D3D = 0;
-	m_Camera = 0;
-	m_Light = 0;
-	m_Model = 0;
-	m_FullScreenWindow = 0;
-	m_DeferredBuffers = 0;
-	m_DeferredShader = 0;
-	m_LightShader = 0;
 }
 
 
@@ -34,7 +26,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 
 	
 	// Create the input object.  The input object will be used to handle reading the keyboard and mouse input from the user.
-	m_Input = new InputClass;
+	m_Input = std::make_unique<InputClass>();
 	if(!m_Input)
 	{
 		return false;
@@ -49,7 +41,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	}
 
 	// Create the Direct3D object.
-	m_D3D = new D3DClass;
+	m_D3D = std::make_unique<D3DClass>();
 	if(!m_D3D)
 	{
 		return false;
@@ -64,7 +56,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	}
 
 	// Create the camera object.
-	m_Camera = new CameraClass;
+	m_Camera = std::make_unique<CameraClass>();
 	if(!m_Camera)
 	{
 		return false;
@@ -76,7 +68,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	m_Camera->RenderBaseViewMatrix();
 
 	// Create the light object.
-	m_Light = new LightClass;
+	m_Light = std::make_unique<LightClass>();
 	if(!m_Light)
 	{
 		return false;
@@ -87,7 +79,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	m_Light->SetDirection(0.0f, 0.0f, 1.0f);
 	
 	// Create the model object.
-	m_Model = new ModelClass;
+	m_Model = std::make_unique<ModelClass>();
 	if(!m_Model)
 	{
 		return false;
@@ -102,7 +94,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	}
 
 	// Create the full screen ortho window object.
-	m_FullScreenWindow = new OrthoWindowClass;
+	m_FullScreenWindow = std::make_unique<OrthoWindowClass>();
 	if(!m_FullScreenWindow)
 	{
 		return false;
@@ -117,7 +109,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	}
 
 	// Create the deferred buffers object.
-	m_DeferredBuffers = new DeferredBuffersClass;
+	m_DeferredBuffers = std::make_unique<GBuffersClass>();
 	if(!m_DeferredBuffers)
 	{
 		return false;
@@ -132,7 +124,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	}
 
 	// Create the deferred shader object.
-	m_DeferredShader = new DeferredShaderClass;
+	m_DeferredShader = std::make_unique<DeferredShaderClass>();
 	if(!m_DeferredShader)
 	{
 		return false;
@@ -147,7 +139,7 @@ bool ApplicationClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidt
 	}
 
 	// Create the light shader object.
-	m_LightShader = new LightShaderClass;
+	m_LightShader = std::make_unique<LightShaderClass>();
 	if(!m_LightShader)
 	{
 		return false;
@@ -171,70 +163,50 @@ void ApplicationClass::Shutdown()
 	if(m_LightShader)
 	{
 		m_LightShader->Shutdown();
-		delete m_LightShader;
-		m_LightShader = 0;
+		m_LightShader.reset();
 	}
 
 	// Release the deferred shader object.
 	if(m_DeferredShader)
 	{
 		m_DeferredShader->Shutdown();
-		delete m_DeferredShader;
-		m_DeferredShader = 0;
+		m_DeferredShader.reset();
 	}
 
 	// Release the deferred buffers object.
 	if(m_DeferredBuffers)
 	{
 		m_DeferredBuffers->Shutdown();
-		delete m_DeferredBuffers;
-		m_DeferredBuffers = 0;
+		m_DeferredBuffers.reset();
 	}
 
 	// Release the full screen ortho window object.
 	if(m_FullScreenWindow)
 	{
 		m_FullScreenWindow->Shutdown();
-		delete m_FullScreenWindow;
-		m_FullScreenWindow = 0;
+		m_FullScreenWindow.reset();
 	}
 
 	// Release the model object.
 	if(m_Model)
 	{
 		m_Model->Shutdown();
-		delete m_Model;
-		m_Model = 0;
+		m_Model.reset();
 	}
 
-	// Release the light object.
-	if(m_Light)
-	{
-		delete m_Light;
-		m_Light = 0;
-	}
-
-	// Release the camera object.
-	if(m_Camera)
-	{
-		delete m_Camera;
-		m_Camera = 0;
-	}
 	
 	// Release the D3D object.
 	if(m_D3D)
 	{
 		m_D3D->Shutdown();
-		delete m_D3D;
-		m_D3D = 0;
+		m_D3D.reset();
 	}
 
 	// Release the input object.
 	if(m_Input)
 	{
 		m_Input->Shutdown();
-		delete m_Input;
-		m_Input = 0;
+		m_Input.reset();
 	}
 
 	return;
@@ -287,6 +259,7 @@ bool ApplicationClass::Render()
 		return false;
 	}
 
+	ScopedGPUMarker marker(L"Render Scene", m_D3D.get());
 	// Clear the scene.
 	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -302,10 +275,13 @@ bool ApplicationClass::Render()
 	m_FullScreenWindow->Render(m_D3D->GetDeviceContext());
 
 	// Render the full screen ortho window using the deferred light shader and the render buffers.
-	m_LightShader->Render(m_D3D->GetDeviceContext(), m_FullScreenWindow->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix, 
-						  m_DeferredBuffers->GetShaderResourceView(0), m_DeferredBuffers->GetShaderResourceView(1), 
-						  m_Light->GetDirection());
+	{
+		ScopedGPUMarker marker(L"LightShader", m_D3D.get());
 
+		m_LightShader->Render(m_D3D->GetDeviceContext(), m_FullScreenWindow->GetIndexCount(), worldMatrix, baseViewMatrix, orthoMatrix,
+			m_DeferredBuffers->GetShaderResourceView(0), m_DeferredBuffers->GetShaderResourceView(1),
+			m_Light->GetDirection());
+	}
 	// Turn the Z buffer back on now that all 2D rendering has completed.
 	m_D3D->TurnZBufferOn();
 	
@@ -318,6 +294,8 @@ bool ApplicationClass::Render()
 
 bool ApplicationClass::RenderSceneToTexture()
 {
+	ScopedGPUMarker marker(L"GBuffer Pass", m_D3D.get());
+
 	D3DXMATRIX worldMatrix, viewMatrix, projectionMatrix;
 
 

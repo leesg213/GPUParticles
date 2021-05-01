@@ -23,7 +23,7 @@ const float SCREEN_NEAR = 0.1f;
 #include "lightclass.h"
 #include "modelclass.h"
 #include "orthowindowclass.h"
-#include "deferredbuffersclass.h"
+#include "GBuffersClass.h"
 #include "deferredshaderclass.h"
 #include "lightshaderclass.h"
 
@@ -49,15 +49,15 @@ private:
 	bool RenderSceneToTexture();
 
 private:
-	InputClass* m_Input;
-	D3DClass* m_D3D;
-	CameraClass* m_Camera;
-	LightClass* m_Light;
-	ModelClass* m_Model;
-	OrthoWindowClass* m_FullScreenWindow;
-	DeferredBuffersClass* m_DeferredBuffers;
-	DeferredShaderClass* m_DeferredShader;
-	LightShaderClass* m_LightShader;
+	std::unique_ptr<InputClass> m_Input;
+	std::unique_ptr<D3DClass> m_D3D;
+	std::unique_ptr<CameraClass> m_Camera;
+	std::unique_ptr<LightClass> m_Light;
+	std::unique_ptr<ModelClass> m_Model;
+	std::unique_ptr<OrthoWindowClass> m_FullScreenWindow;
+	std::unique_ptr<GBuffersClass> m_DeferredBuffers;
+	std::unique_ptr<DeferredShaderClass> m_DeferredShader;
+	std::unique_ptr<LightShaderClass> m_LightShader;
 };
 
 #endif

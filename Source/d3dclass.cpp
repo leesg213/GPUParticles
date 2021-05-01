@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: d3dclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
+#include "pch.h"
 #include "d3dclass.h"
 
 
@@ -680,4 +681,16 @@ void D3DClass::ResetViewport()
     m_deviceContext->RSSetViewports(1, &m_viewport);
 
 	return;
+}
+
+void D3DClass::PushMarker(std::wstring const& name)
+{
+	D3DPERF_BeginEvent(
+		D3DCOLOR_ARGB(255, 255, 255, 255),
+		name.c_str()
+	);
+}
+void D3DClass::PopMarker()
+{
+	D3DPERF_EndEvent();
 }

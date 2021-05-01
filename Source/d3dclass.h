@@ -21,6 +21,8 @@
 #include <d3dcommon.h>
 #include <d3d11.h>
 #include <d3dx10math.h>
+#include <string>
+#include <d3d9.h>
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +59,9 @@ public:
 
 	void SetBackBufferRenderTarget();
 	void ResetViewport();
+
+	void PushMarker(std::wstring const& name);
+	void PopMarker();
 
 private:
 	bool m_vsync_enabled;

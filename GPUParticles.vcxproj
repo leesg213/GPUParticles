@@ -14,7 +14,7 @@
     <ClCompile Include="Source\applicationclass.cpp" />
     <ClCompile Include="Source\cameraclass.cpp" />
     <ClCompile Include="Source\d3dclass.cpp" />
-    <ClCompile Include="Source\deferredbuffersclass.cpp" />
+    <ClCompile Include="Source\gbuffersclass.cpp" />
     <ClCompile Include="Source\deferredshaderclass.cpp" />
     <ClCompile Include="Source\graphicsclass.cpp" />
     <ClCompile Include="Source\inputclass.cpp" />
@@ -23,14 +23,19 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\modelclass.cpp" />
     <ClCompile Include="Source\orthowindowclass.cpp" />
+    <ClCompile Include="Source\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Source\systemclass.cpp" />
     <ClCompile Include="Source\textureclass.cpp" />
+    <ClCompile Include="Source\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\applicationclass.h" />
     <ClInclude Include="Source\cameraclass.h" />
     <ClInclude Include="Source\d3dclass.h" />
-    <ClInclude Include="Source\deferredbuffersclass.h" />
+    <ClInclude Include="Source\gbuffersclass.h" />
     <ClInclude Include="Source\deferredshaderclass.h" />
     <ClInclude Include="Source\graphicsclass.h" />
     <ClInclude Include="Source\inputclass.h" />
@@ -38,8 +43,10 @@
     <ClInclude Include="Source\lightshaderclass.h" />
     <ClInclude Include="Source\modelclass.h" />
     <ClInclude Include="Source\orthowindowclass.h" />
+    <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\systemclass.h" />
     <ClInclude Include="Source\textureclass.h" />
+    <ClInclude Include="Source\util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BEC7B7E9-E562-4507-B4B4-8AE604B842EB}</ProjectGuid>
@@ -79,29 +86,38 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)SDKs\Microsoft DirectX SDK (June 2010)\Include</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)SDKs\Microsoft DirectX SDK (June 2010)\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)SDKs\Microsoft DirectX SDK (June 2010)\Include</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,6 +125,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)SDKs\Microsoft DirectX SDK (June 2010)\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

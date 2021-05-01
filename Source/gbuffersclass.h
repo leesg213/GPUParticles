@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Filename: deferredbuffersclass.h
+// Filename: GBuffersClass.h
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _DEFERREDBUFFERSCLASS_H_
-#define _DEFERREDBUFFERSCLASS_H_
+#ifndef _GBuffersClass_H_
+#define _GBuffersClass_H_
 
 
 /////////////
@@ -19,14 +19,14 @@ const int BUFFER_COUNT = 2;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Class name: DeferredBuffersClass
+// Class name: GBuffersClass
 ////////////////////////////////////////////////////////////////////////////////
-class DeferredBuffersClass
+class GBuffersClass
 {
 public:
-	DeferredBuffersClass();
-	DeferredBuffersClass(const DeferredBuffersClass&);
-	~DeferredBuffersClass();
+	GBuffersClass();
+	GBuffersClass(const GBuffersClass&);
+	~GBuffersClass();
 
 	bool Initialize(ID3D11Device*, int, int, float, float);
 	void Shutdown();

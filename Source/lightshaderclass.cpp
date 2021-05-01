@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: lightshaderclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
+#include "pch.h"
 #include "lightshaderclass.h"
 
 
@@ -283,7 +284,7 @@ void LightShaderClass::ShutdownShader()
 void LightShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
 {
 	char* compileErrors;
-	unsigned long bufferSize, i;
+	size_t bufferSize, i;
 	ofstream fout;
 
 

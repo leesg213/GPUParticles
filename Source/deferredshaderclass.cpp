@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Filename: deferredshaderclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
+#include "pch.h"
 #include "deferredshaderclass.h"
 
 
@@ -266,7 +267,7 @@ void DeferredShaderClass::ShutdownShader()
 void DeferredShaderClass::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename)
 {
 	char* compileErrors;
-	unsigned long bufferSize, i;
+	size_t bufferSize, i;
 	ofstream fout;
 
 
